@@ -34,7 +34,7 @@ contract HalalChainRegistryTest is Test {
         vm.prank(producer);
         uint256 id = registry.registerProduct("BATCH-001", "ipfs://QmMeta1");
 
-        (, address prod, string memory batch, , , HalalChainRegistry.Status status, ) = registry.products(id);
+        (, address prod, string memory batch,,, HalalChainRegistry.Status status,) = registry.products(id);
         assertEq(prod, producer);
         assertEq(batch, "BATCH-001");
         assertEq(uint8(status), uint8(HalalChainRegistry.Status.Registered));
@@ -42,7 +42,7 @@ contract HalalChainRegistryTest is Test {
 
     function test_RegisterProduct_RevertIfNotProducer() public {
         vm.prank(randomUser);
-        vm.expectRevert(); 
+        vm.expectRevert();
         registry.registerProduct("BATCH-002", "ipfs://QmMeta2");
     }
 
@@ -55,7 +55,7 @@ contract HalalChainRegistryTest is Test {
         vm.prank(certifier);
         registry.issueCertificate(id, "ipfs://QmCert1", 365);
 
-        (, , , , , HalalChainRegistry.Status status, ) = registry.products(id);
+        (,,,,, HalalChainRegistry.Status status,) = registry.products(id);
         assertEq(uint8(status), uint8(HalalChainRegistry.Status.Certified));
     }
 
@@ -95,7 +95,7 @@ contract HalalChainRegistryTest is Test {
         vm.prank(certifier);
         registry.revokeCertificate(id, "Slaughter method non-compliant");
 
-        (, , , , , HalalChainRegistry.Status status, ) = registry.products(id);
+        (,,,,, HalalChainRegistry.Status status,) = registry.products(id);
         assertEq(uint8(status), uint8(HalalChainRegistry.Status.Revoked));
 
         vm.prank(distributor);
@@ -156,7 +156,7 @@ contract HalalChainRegistryTest is Test {
         vm.prank(randomUser);
         registry.flagContamination(id, "Found mixed with non-halal cargo in transit");
 
-        (, , , , , HalalChainRegistry.Status status, ) = registry.products(id);
+        (,,,,, HalalChainRegistry.Status status,) = registry.products(id);
         assertEq(uint8(status), uint8(HalalChainRegistry.Status.Flagged));
     }
 
@@ -167,11 +167,11 @@ contract HalalChainRegistryTest is Test {
         uint256 id = registry.registerProduct("BATCH-001", "ipfs://QmMeta1");
 
         vm.prank(certifier);
-        registry.issueCertificate(id, "ipfs://QmCert1", 1); 
+        registry.issueCertificate(id, "ipfs://QmCert1", 1);
 
-        vm.warp(block.timestamp + 2 days); 
+        vm.warp(block.timestamp + 2 days);
 
-        (, , , , , HalalChainRegistry.Status status, ) = registry.products(id);
+        (,,,,, HalalChainRegistry.Status status,) = registry.products(id);
         assertEq(uint8(status), uint8(HalalChainRegistry.Status.Certified));
     }
 
@@ -181,9 +181,9 @@ contract HalalChainRegistryTest is Test {
         uint256 id = registry.registerProduct("BATCH-001", "ipfs://QmMeta1");
 
         vm.prank(certifier);
-        registry.issueCertificate(id, "ipfs://QmCert1", 1); 
+        registry.issueCertificate(id, "ipfs://QmCert1", 1);
 
-        vm.warp(block.timestamp + 2 days); 
+        vm.warp(block.timestamp + 2 days);
 
         vm.prank(producer);
         vm.expectRevert("Invalid status or certificate expired");
@@ -199,13 +199,13 @@ contract HalalChainRegistryTest is Test {
         vm.prank(certifier);
         registry.approveCertification(id, "ipfs://QmConsensusCert", 365);
 
-        (, , , , , HalalChainRegistry.Status statusBefore, ) = registry.products(id);
+        (,,,,, HalalChainRegistry.Status statusBefore,) = registry.products(id);
         assertEq(uint8(statusBefore), uint8(HalalChainRegistry.Status.Registered));
 
         vm.prank(certifier2);
         registry.approveCertification(id, "ipfs://QmConsensusCert", 365);
 
-        (, , , , , HalalChainRegistry.Status statusAfter, ) = registry.products(id);
+        (,,,,, HalalChainRegistry.Status statusAfter,) = registry.products(id);
         assertEq(uint8(statusAfter), uint8(HalalChainRegistry.Status.Certified));
     }
 
@@ -252,6 +252,6 @@ contract HalalChainRegistryTest is Test {
         assertEq(product.batchNumber, "BATCH-008");
         assertEq(certificate.ipfsHash, "ipfs://QmCert8");
         assertEq(custody[0], producer);
-        assertTrue(certValid); 
+        assertTrue(certValid);
     }
 }
