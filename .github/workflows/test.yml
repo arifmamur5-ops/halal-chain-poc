@@ -13,17 +13,18 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
-    steps:
+        steps:
       - uses: actions/checkout@v4
         with:
           persist-credentials: false
-          submodules: recursive
 
       - name: Install Foundry
         uses: foundry-rs/foundry-toolchain@v1
 
-      - name: Show Forge version
-        run: forge --version
+      - name: Install Dependencies
+        run: |
+          forge install foundry-rs/forge-std --no-commit
+          forge install openzeppelin/openzeppelin-contracts --no-commit
 
       - name: Run Forge fmt
         run: forge fmt --check
