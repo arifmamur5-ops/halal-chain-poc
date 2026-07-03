@@ -1,22 +1,20 @@
 name: CI
 
-permissions: {}
-
 on:
   push:
+    branches: [ main ]
   pull_request:
+    branches: [ main ]
   workflow_dispatch:
 
 jobs:
   check:
     name: Foundry project
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
-        steps:
-      - uses: actions/checkout@v4
-        with:
-          persist-credentials: false
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
       - name: Install Foundry
         uses: foundry-rs/foundry-toolchain@v1
