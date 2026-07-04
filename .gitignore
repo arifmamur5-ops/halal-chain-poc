@@ -19,3 +19,6 @@ docs/
 .env.*
 !.env.example
 lib/
+
+# Node dependencies
+node_modules/
