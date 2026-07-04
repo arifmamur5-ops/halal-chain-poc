@@ -19,7 +19,7 @@ contract DeployHalalChain is Script {
 
         // Ambil bytes32 PRODUCER_ROLE langsung dari variabel publik kontrak lo
         bytes32 producerRole = registry.PRODUCER_ROLE();
-        
+
         // Kasih akses role ke akun producer
         registry.grantRole(producerRole, producerAddress);
 
