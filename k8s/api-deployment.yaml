@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: halal-api
+  labels:
+    app: halal-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: halal-api
+  template:
+    metadata:
+      labels:
+        app: halal-api
+    spec:
+      containers:
+        - name: halal-api
+          image: halal-chain-api:latest
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 3000
+          envFrom:
+            - configMapRef:
+                name: api-config

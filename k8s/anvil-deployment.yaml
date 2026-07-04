@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: anvil
+  labels:
+    app: anvil
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: anvil
+  template:
+    metadata:
+      labels:
+        app: anvil
+    spec:
+      containers:
+        - name: anvil
+          image: ghcr.io/foundry-rs/foundry:latest
+          command: ["anvil", "--host", "0.0.0.0"]
+          ports:
+            - containerPort: 8545

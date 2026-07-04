@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: anvil-service
+spec:
+  selector:
+    app: anvil
+  ports:
+    - port: 8545
+      targetPort: 8545
+  type: ClusterIP
